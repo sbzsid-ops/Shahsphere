@@ -1,0 +1,57 @@
+name: Install Google Analytics
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/install-google-analytics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-ga4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Add GA4 tag to HTML pages
+        env:
+          GA_ID: G-95Q0EEXJW3
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+
+          ga_id = os.environ['GA_ID']
+          tag = f'''<!-- Google Analytics 4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id={ga_id}"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){{dataLayer.push(arguments);}}\n  gtag('js', new Date());\n  gtag('config', '{ga_id}');\n</script>\n'''
+
+          changed = []
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if ga_id in text:
+                  continue
+              if '</head>' not in text.lower():
+                  raise SystemExit(f'Missing </head>: {path}')
+              idx = text.lower().rfind('</head>')
+              updated = text[:idx] + tag + text[idx:]
+              path.write_text(updated, encoding='utf-8')
+              changed.append(str(path))
+
+          print('Updated:', ', '.join(changed) or 'none')
+          PY
+      - name: Commit GA4 changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '*.html' 'services/*.html'
+          git commit -m "Add Google Analytics 4 tracking"
+          git push
