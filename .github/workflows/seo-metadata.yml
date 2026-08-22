@@ -17,74 +17,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Apply metadata and fix service form endpoints
+      - name: Apply metadata and fix service assets
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
 
           base = 'https://shahsphere.com'
+          social_image = base + '/assets/images/shahsphere-social-preview.svg'
           pages = {
-              'index.html': {
-                  'title': 'Shahsphere | IT, AI, Consulting, Education & Business Services',
-                  'description': 'Shahsphere brings IT & digital, AI, business consulting, education, catering, manpower and India travel services together under one operating standard.',
-                  'url': base + '/',
-                  'type': 'website'
-              },
-              'about.html': {
-                  'title': 'About Shahsphere | One Sphere, Many Worlds',
-                  'description': 'Learn about Shahsphere, a multi-service company bringing focused business lines together under one operating standard.',
-                  'url': base + '/about.html',
-                  'type': 'website'
-              },
-              'contact.html': {
-                  'title': 'Contact Shahsphere | Start a Conversation',
-                  'description': 'Contact Shahsphere for IT, AI, consulting, education, Dastarkhawn catering, manpower or India travel inquiries.',
-                  'url': base + '/contact.html',
-                  'type': 'website'
-              },
-              'services/it-digital.html': {
-                  'title': 'IT & Digital Services | Website Development, SEO & Content | Shahsphere',
-                  'description': 'Shahsphere builds fast websites, search engine optimization strategies and content systems designed to improve visibility and conversion.',
-                  'url': base + '/services/it-digital.html',
-                  'type': 'website'
-              },
-              'services/ai.html': {
-                  'title': 'AI Services | Generative AI, Video & Automation | Shahsphere',
-                  'description': 'Turn generative AI into practical business output with AI video, automation, internal tools and content services from Shahsphere.',
-                  'url': base + '/services/ai.html',
-                  'type': 'website'
-              },
-              'services/consulting.html': {
-                  'title': 'Business Consulting | CRM, Revenue & Growth Strategy | Shahsphere',
-                  'description': 'Project-based consulting for CRM implementation, admissions and enrollment automation, revenue strategy and business expansion.',
-                  'url': base + '/services/consulting.html',
-                  'type': 'website'
-              },
-              'services/education.html': {
-                  'title': 'Education Services | Admissions, Enrollment & Growth | Shahsphere',
-                  'description': 'Shahsphere helps education institutions modernize admissions, automate enrollment, improve campaigns and build international student pipelines.',
-                  'url': base + '/services/education.html',
-                  'type': 'website'
-              },
-              'services/food.html': {
-                  'title': 'Dastarkhawn | Catering & Food Services | Shahsphere',
-                  'description': 'Dastarkhawn by Shahsphere offers food and catering services with a focus on memorable experiences and reliable on-the-ground delivery.',
-                  'url': base + '/services/food.html',
-                  'type': 'website'
-              },
-              'services/staffing.html': {
-                  'title': 'Manpower & Staffing Services | Shahsphere',
-                  'description': 'Find flexible manpower and staffing solutions from Shahsphere for organizations that need dependable, on-the-ground support.',
-                  'url': base + '/services/staffing.html',
-                  'type': 'website'
-              },
-              'services/travel.html': {
-                  'title': 'India Travel Concierge | Personalized India Trips | Shahsphere',
-                  'description': 'Plan a personalized India trip with Shahsphere, including curated itineraries, local coordination and on-the-ground travel support.',
-                  'url': base + '/services/travel.html',
-                  'type': 'website'
-              }
+              'index.html': {'title': 'Shahsphere | IT, AI, Consulting, Education & Business Services', 'description': 'Shahsphere brings IT & digital, AI, business consulting, education, catering, manpower and India travel services together under one operating standard.', 'url': base + '/', 'type': 'website'},
+              'about.html': {'title': 'About Shahsphere | One Sphere, Many Worlds', 'description': 'Learn about Shahsphere, a multi-service company bringing focused business lines together under one operating standard.', 'url': base + '/about.html', 'type': 'website'},
+              'contact.html': {'title': 'Contact Shahsphere | Start a Conversation', 'description': 'Contact Shahsphere for IT, AI, consulting, education, Dastarkhawn catering, manpower or India travel inquiries.', 'url': base + '/contact.html', 'type': 'website'},
+              'services/it-digital.html': {'title': 'IT & Digital Services | Website Development, SEO & Content | Shahsphere', 'description': 'Shahsphere builds fast websites, search engine optimization strategies and content systems designed to improve visibility and conversion.', 'url': base + '/services/it-digital.html', 'type': 'website'},
+              'services/ai.html': {'title': 'AI Services | Generative AI, Video & Automation | Shahsphere', 'description': 'Turn generative AI into practical business output with AI video, automation, internal tools and content services from Shahsphere.', 'url': base + '/services/ai.html', 'type': 'website'},
+              'services/consulting.html': {'title': 'Business Consulting | CRM, Revenue & Growth Strategy | Shahsphere', 'description': 'Project-based consulting for CRM implementation, admissions and enrollment automation, revenue strategy and business expansion.', 'url': base + '/services/consulting.html', 'type': 'website'},
+              'services/education.html': {'title': 'Education Services | Admissions, Enrollment & Growth | Shahsphere', 'description': 'Shahsphere helps education institutions modernize admissions, automate enrollment, improve campaigns and build international student pipelines.', 'url': base + '/services/education.html', 'type': 'website'},
+              'services/food.html': {'title': 'Dastarkhawn | Catering & Food Services | Shahsphere', 'description': 'Dastarkhawn by Shahsphere offers food and catering services with a focus on memorable experiences and reliable on-the-ground delivery.', 'url': base + '/services/food.html', 'type': 'website'},
+              'services/staffing.html': {'title': 'Manpower & Staffing Services | Shahsphere', 'description': 'Find flexible manpower and staffing solutions from Shahsphere for organizations that need dependable, on-the-ground support.', 'url': base + '/services/staffing.html', 'type': 'website'},
+              'services/travel.html': {'title': 'India Travel Concierge | Personalized India Trips | Shahsphere', 'description': 'Plan a personalized India trip with Shahsphere, including curated itineraries, local coordination and on-the-ground travel support.', 'url': base + '/services/travel.html', 'type': 'website'}
           }
 
           root_schema = '''<script type="application/ld+json">\n{\n  "@context": "https://schema.org",\n  "@type": "Organization",\n  "name": "Shahsphere",\n  "url": "https://shahsphere.com/",\n  "description": "A multi-service company offering IT and digital services, AI services, business consulting, education services and on-the-ground service lines.",\n  "email": "sbzsid@gmail.com"\n}\n</script>'''
@@ -93,24 +44,26 @@ jobs:
               path = Path(path_str)
               text = path.read_text(encoding='utf-8')
               favicon = 'favicon.svg' if '/' not in path_str else '../favicon.svg'
-              block = f'''<!-- Shahsphere SEO START -->\n<title>{meta['title']}</title>\n<meta name="description" content="{meta['description']}">\n<link rel="canonical" href="{meta['url']}">\n<meta name="robots" content="index, follow, max-image-preview:large">\n<meta property="og:type" content="{meta['type']}">\n<meta property="og:site_name" content="Shahsphere">\n<meta property="og:title" content="{meta['title']}">\n<meta property="og:description" content="{meta['description']}">\n<meta property="og:url" content="{meta['url']}">\n<meta property="og:locale" content="en_US">\n<meta name="twitter:card" content="summary">\n<meta name="twitter:title" content="{meta['title']}">\n<meta name="twitter:description" content="{meta['description']}">\n<meta name="theme-color" content="#0b1f3a">\n<link rel="icon" type="image/svg+xml" href="{favicon}">\n{root_schema if path_str == 'index.html' else ''}\n<!-- Shahsphere SEO END -->'''
+              block = f'''<!-- Shahsphere SEO START -->\n<title>{meta['title']}</title>\n<meta name="description" content="{meta['description']}">\n<link rel="canonical" href="{meta['url']}">\n<meta name="robots" content="index, follow, max-image-preview:large">\n<meta property="og:type" content="{meta['type']}">\n<meta property="og:site_name" content="Shahsphere">\n<meta property="og:title" content="{meta['title']}">\n<meta property="og:description" content="{meta['description']}">\n<meta property="og:url" content="{meta['url']}">\n<meta property="og:image" content="{social_image}">\n<meta property="og:image:alt" content="Shahsphere — One sphere, many worlds">\n<meta property="og:locale" content="en_US">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="{meta['title']}">\n<meta name="twitter:description" content="{meta['description']}">\n<meta name="twitter:image" content="{social_image}">\n<meta name="theme-color" content="#0b1f3a">\n<link rel="icon" type="image/svg+xml" href="{favicon}">\n{root_schema if path_str == 'index.html' else ''}\n<!-- Shahsphere SEO END -->'''
               if '<!-- Shahsphere SEO START -->' in text:
                   text = re.sub(r'<!-- Shahsphere SEO START -->.*?<!-- Shahsphere SEO END -->', block, text, flags=re.S)
               else:
                   text = re.sub(r'<title>.*?</title>\s*<meta name="description" content="[^"]*">', block, text, count=1, flags=re.S)
               if 'services/' in path_str:
                   text = text.replace('https://formspree.io/f/YOUR_FORM_ID', 'https://formspree.io/f/mljrvzlo')
+              if path_str == 'services/food.html':
+                  text = re.sub(r'https://sspark\.genspark\.ai/cfimages\?[^"\']+', '../assets/images/dastarkhawn-catering.svg', text)
               path.write_text(text, encoding='utf-8')
           PY
 
-      - name: Commit SEO updates
+      - name: Commit SEO and asset updates
         run: |
           if git diff --quiet; then
-            echo "No SEO changes to commit"
+            echo "No changes to commit"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html about.html contact.html services/*.html
-          git commit -m "Apply sitewide SEO metadata and fix service inquiry endpoints"
+          git commit -m "Add social preview metadata and localize Dastarkhawn asset"
           git push
