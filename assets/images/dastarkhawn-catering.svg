@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+<title id="title">Dastarkhawn Indian catering spread</title>
+<desc id="desc">A warm illustrated Indian dining spread with thali dishes, curries, rice, naan and spices.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3b1f12"/><stop offset="0.55" stop-color="#7a3f1d"/><stop offset="1" stop-color="#d89a4c"/></linearGradient>
+  <radialGradient id="table" cx="50%" cy="45%" r="70%"><stop stop-color="#f7d9a3"/><stop offset="1" stop-color="#c57b36"/></radialGradient>
+  <filter id="s"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-opacity=".28"/></filter>
+</defs>
+<rect width="1600" height="1000" fill="url(#bg)"/>
+<ellipse cx="800" cy="550" rx="680" ry="390" fill="url(#table)"/>
+<g filter="url(#s)">
+  <circle cx="800" cy="550" r="340" fill="#f5ead4" stroke="#b98a52" stroke-width="20"/>
+  <circle cx="800" cy="550" r="260" fill="#d6a464" stroke="#9c6735" stroke-width="12"/>
+  <g fill="#f8f0df" stroke="#7b4a27" stroke-width="10">
+    <circle cx="800" cy="370" r="82"/><circle cx="980" cy="470" r="82"/><circle cx="920" cy="670" r="82"/><circle cx="680" cy="690" r="82"/><circle cx="590" cy="490" r="82"/>
+  </g>
+  <circle cx="800" cy="370" r="60" fill="#d88a2f"/><circle cx="980" cy="470" r="60" fill="#8d3e20"/><circle cx="920" cy="670" r="60" fill="#d5b334"/><circle cx="680" cy="690" r="60" fill="#8c8d35"/><circle cx="590" cy="490" r="60" fill="#c64f2d"/>
+  <path d="M720 560h160l-28 170H748z" fill="#fff4dc" stroke="#8b552e" stroke-width="10"/>
+  <path d="M760 590c30-25 70-25 100 0M755 635c35-25 75-25 110 0M750 680c40-25 80-25 120 0" fill="none" stroke="#b78043" stroke-width="16" stroke-linecap="round"/>
+</g>
+<g fill="#fff7e8" opacity=".95" font-family="Arial, Helvetica, sans-serif">
+ <text x="90" y="130" font-size="58" font-weight="700">DASTARKHWAN</text>
+ <text x="90" y="195" font-size="32">Home-cooked Indian catering</text>
+</g>
+<g fill="#f2c37d" opacity=".8"><circle cx="1450" cy="120" r="16"/><circle cx="1490" cy="170" r="10"/><circle cx="1350" cy="110" r="9"/><circle cx="120" cy="880" r="12"/><circle cx="170" cy="840" r="8"/></g>
+</svg>
