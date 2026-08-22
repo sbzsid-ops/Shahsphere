@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sbzsid-ops.github.io/Shahsphere/sitemap.xml
