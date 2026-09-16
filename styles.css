@@ -104,3 +104,9 @@ body[data-theme="dark"] .btn-primary:hover{background:var(--accent-2)}
 /* Shahsphere Related Services START */
 .related-services{padding:72px 0;border-top:1px solid var(--line,#dbe2ea);border-bottom:1px solid var(--line,#dbe2ea);background:var(--panel,#f7f9fc)}.related-services h2{margin:10px 0 12px}.related-services p{max-width:760px;color:var(--muted,#667085)}.related-service-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.related-service-links a{display:inline-flex;padding:10px 14px;border:1px solid var(--line,#dbe2ea);border-radius:999px;color:var(--ink,#172033);text-decoration:none;font-weight:600}.related-service-links a:hover{border-color:#3f5fb8;color:#3f5fb8}@media(max-width:640px){.related-services{padding:52px 0}}
 /* Shahsphere Related Services END */
+
+/* Shahsphere Phase 2 SEO START */
+.phase2-seo{padding:72px 0;border-top:1px solid var(--line,#dbe2ea);background:var(--panel,#f7f9fc)}
+.phase2-seo .sec-head{max-width:900px}
+.phase2-seo .grid-3{margin-top:28px}
+/* Shahsphere Phase 2 SEO END */
