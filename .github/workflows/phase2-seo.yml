@@ -1,0 +1,127 @@
+name: Apply Shahsphere Phase 2 SEO
+
+on:
+  push:
+    paths:
+      - '.github/workflows/phase2-seo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  phase2-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply Phase 2 search-visibility improvements
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          pages = {
+            'services/it-digital.html': {
+              'title': 'Website Development & SEO Services | Shahsphere',
+              'description': 'Shahsphere provides website development, technical SEO, content strategy and lead-generation services for businesses that want stronger search visibility and conversion.',
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-it-title"><div class="wrap"><span class="eyebrow">SEARCH-FOCUSED SERVICES</span><div class="sec-head"><h2 id="phase2-it-title">Website development, SEO &amp; content for growth.</h2><p>Shahsphere brings website development, search engine optimization and content creation together in one delivery team. Services cover conversion-focused websites, technical and on-page SEO, landing pages, blogs and lead-generation content.</p></div><div class="grid-3"><div class="card"><h3>Website Development</h3><p>Responsive business websites and custom web experiences built with performance and search visibility in mind.</p></div><div class="card"><h3>SEO Services</h3><p>Technical, on-page and content-led optimization aligned with the pages and searches that matter to your business.</p></div><div class="card"><h3>Content &amp; Lead Generation</h3><p>Landing pages, blogs and content systems designed to turn relevant organic traffic into enquiries.</p></div></div></div></section>'''
+            },
+            'services/ai.html': {
+              'title': 'AI Services | AI Video, Automation & Internal Tools | Shahsphere',
+              'description': 'Shahsphere delivers practical AI services including AI video production, internal tools, workflow automation and social-media content production.',
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-ai-title"><div class="wrap"><span class="eyebrow">PRACTICAL AI SERVICES</span><div class="sec-head"><h2 id="phase2-ai-title">AI video, automation and internal tools for business teams.</h2><p>Use generative AI for shipped business output rather than experiments alone. Shahsphere supports AI video production, internal tools and workflow automation, plus social-media content training and done-for-you production.</p></div><div class="grid-3"><div class="card"><h3>AI Video Production</h3><p>Script-to-screen video for orientation, explainers, products and advertising.</p></div><div class="card"><h3>AI Automation &amp; Internal Tools</h3><p>Custom workflows and lightweight tools that reduce repetitive manual work.</p></div><div class="card"><h3>AI-Powered Content</h3><p>Social-media content production and training for teams building an in-house capability.</p></div></div></div></section>'''
+            },
+            'services/consulting.html': {
+              'title': 'Business Consulting | CRM & Revenue Operations | Shahsphere',
+              'description': 'Project-based business consulting for CRM implementation, admissions automation, revenue strategy and expansion planning from Shahsphere.',
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-consulting-title"><div class="wrap"><span class="eyebrow">CRM &amp; REVENUE OPERATIONS</span><div class="sec-head"><h2 id="phase2-consulting-title">Business consulting built around your CRM and growth systems.</h2><p>Shahsphere helps organizations improve the systems behind sales, admissions and expansion. Engagements can include CRM implementation, admissions and enrollment automation, revenue strategy and a scoped growth roadmap.</p></div><div class="grid-3"><div class="card"><h3>CRM Implementation</h3><p>Implementation and configuration across Meritto, LeadSquared, Zoho and HubSpot.</p></div><div class="card"><h3>Admissions Automation</h3><p>Workflows, follow-ups and reporting designed to reduce manual work from inquiry to enrollment.</p></div><div class="card"><h3>Revenue &amp; Expansion Strategy</h3><p>Project-based planning tied to pipeline realities, operating needs and measurable next steps.</p></div></div></div></section>'''
+            },
+            'services/education.html': {
+              'title': 'Education Services | Admissions & Enrollment Automation | Shahsphere',
+              'description': 'Shahsphere helps education institutions improve admissions, enrollment automation, operations, recruitment campaigns and international student pipelines.',
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-education-title"><div class="wrap"><span class="eyebrow">EDUCATION GROWTH &amp; ADMISSIONS</span><div class="sec-head"><h2 id="phase2-education-title">Admissions, enrollment and growth services for education institutions.</h2><p>Shahsphere works with institutes and universities on admissions automation, operational modernization, recruitment campaigns and international student pipelines. The offering connects process, technology and growth rather than treating them as separate projects.</p></div><div class="grid-3"><div class="card"><h3>Admissions &amp; Enrollment</h3><p>Lead-to-enrollment workflows, follow-ups and dashboards that reduce manual admissions work.</p></div><div class="card"><h3>Education Operations</h3><p>Reporting, back-office workflows and systems designed to support growing teams.</p></div><div class="card"><h3>International Recruitment</h3><p>Campaigns and international pipelines focused on connecting students with the right programs.</p></div></div></div></section>'''
+            },
+            'services/food.html': {
+              'title': 'Indian Catering in Storrs, CT | Dastarkhawn by Shahsphere',
+              'description': 'Dastarkhawn offers home-cooked North and South Indian catering in Storrs, Manchester, Hartford and the surrounding area, with customizable menus for gatherings and events.',
+              'area': ['Storrs, Connecticut', 'Manchester, Connecticut', 'Hartford, Connecticut'],
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-food-title"><div class="wrap"><span class="eyebrow">LOCAL CATERING</span><div class="sec-head"><h2 id="phase2-food-title">Indian catering in Storrs, Manchester and Hartford.</h2><p>Dastarkhawn provides home-cooked North and South Indian catering for gatherings and events around Storrs, Connecticut, with service extending to Manchester, Hartford and the surrounding area. Menus can include vegetarian options as well as chicken and mutton dishes, depending on the event.</p></div><div class="grid-3"><div class="card"><h3>North Indian Catering</h3><p>Popular dishes include biryani, korma, nihari, rogan josh and paneer specialities.</p></div><div class="card"><h3>South Indian Options</h3><p>Home-style South Indian dishes can be planned as part of a customized event menu.</p></div><div class="card"><h3>Event Catering</h3><p>Custom menus are planned around the occasion, headcount and requested dishes.</p></div></div></div></section>'''
+            },
+            'services/staffing.html': {
+              'title': 'Event Staffing & Manpower | New York & Connecticut | Shahsphere',
+              'description': 'Shahsphere provides on-demand event staffing and manpower support across New York and Connecticut, including event volunteers, film-shoot extras and campus event staff.',
+              'area': ['New York, United States', 'Connecticut, United States'],
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-staffing-title"><div class="wrap"><span class="eyebrow">ON-DEMAND STAFFING</span><div class="sec-head"><h2 id="phase2-staffing-title">Event staffing and manpower support in New York and Connecticut.</h2><p>Shahsphere provides on-demand paid staffing for events, productions and campus programs. The current offering includes event volunteers, film-shoot extras and campus event staff, with deeper vetting available on request depending on client needs.</p></div><div class="grid-3"><div class="card"><h3>Event Staff</h3><p>Registration, wayfinding, hospitality and crowd-support roles for events.</p></div><div class="card"><h3>Film-Shoot Extras</h3><p>Extras and set-support staffing for productions on the East Coast.</p></div><div class="card"><h3>Campus Event Staffing</h3><p>Support for orientations, festivals, conferences and other college or university events.</p></div></div></div></section>'''
+            },
+            'services/travel.html': {
+              'title': 'India Travel Planning & Concierge | Shahsphere',
+              'description': 'Shahsphere plans personalized India trips for US-based travelers with curated itineraries, local coordination, guided travel and on-the-ground support.',
+              'area': ['Delhi, India', 'Rajasthan, India', 'Karnataka, India', 'Kerala, India', 'Tamil Nadu, India', 'Leh-Ladakh, India', 'Kashmir, India', 'Himachal Pradesh, India'],
+              'section': '''<section class="phase2-seo" aria-labelledby="phase2-travel-title"><div class="wrap"><span class="eyebrow">PERSONALIZED INDIA TRAVEL</span><div class="sec-head"><h2 id="phase2-travel-title">India trip planning for US-based travelers.</h2><p>Shahsphere plans customized India travel with itinerary design, local coordination and on-the-ground support. Current destinations include Delhi, Rajasthan, Karnataka, Kerala, Tamil Nadu, Leh-Ladakh, Kashmir and Himachal Pradesh.</p></div><div class="grid-3"><div class="card"><h3>Custom Itineraries</h3><p>Trips are planned around traveler interests, preferred pace, dates and selected states.</p></div><div class="card"><h3>Ground Support</h3><p>Airport pickup and drop, trained drivers, GPS-tracked vehicles and certified English-speaking guides.</p></div><div class="card"><h3>India Concierge</h3><p>Local coordination and optional flight-booking support so travelers have one point of contact for the trip.</p></div></div></div></section>'''
+            },
+          }
+
+          marker_re = re.compile(r'<!-- Shahsphere Phase 2 SEO START -->.*?<!-- Shahsphere Phase 2 SEO END -->', re.S)
+          for fn, cfg in pages.items():
+              p = Path(fn)
+              text = p.read_text(encoding='utf-8')
+              text = re.sub(r'<title>.*?</title>', f'<title>{cfg["title"]}</title>', text, count=1, flags=re.S)
+              text = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{cfg["description"]}">', text, count=1)
+              text = re.sub(r'(<meta property="og:title" content=")[^"]*(")', rf'\g<1>{cfg["title"]}\2', text, count=1)
+              text = re.sub(r'(<meta property="og:description" content=")[^"]*(")', rf'\g<1>{cfg["description"]}\2', text, count=1)
+              text = re.sub(r'(<meta name="twitter:title" content=")[^"]*(")', rf'\g<1>{cfg["title"]}\2', text, count=1)
+              text = re.sub(r'(<meta name="twitter:description" content=")[^"]*(")', rf'\g<1>{cfg["description"]}\2', text, count=1)
+              text = marker_re.sub('', text)
+              block = '<!-- Shahsphere Phase 2 SEO START -->' + cfg['section'] + '<!-- Shahsphere Phase 2 SEO END -->'
+              if '<section id="engagement">' in text:
+                  text = text.replace('<section id="engagement">', block + '<section id="engagement">', 1)
+              elif '<section id="pricing">' in text:
+                  text = text.replace('<section id="pricing">', block + '<section id="pricing">', 1)
+              else:
+                  raise RuntimeError(f'No insertion point found for {fn}')
+              if cfg.get('area'):
+                  area_json = '[' + ','.join('{"@type":"Place","name":"' + a + '"}' for a in cfg['area']) + ']'
+                  text = re.sub(r'("serviceType":"[^"]+","description":"[^"]+","url":"[^"]+","provider":\{"@id":"https://shahsphere\.com/#organization"\})', r'\1,"areaServed":' + area_json, text, count=1)
+              if fn == 'services/food.html':
+                  text = re.sub(r'<img src="\.\./assets/images/Dastarkhawn\.png"[^>]*>" alt="[^"]*">', '<img src="../assets/images/Dastarkhawn.png" alt="Dastarkhawn home-cooked Indian catering spread with biryani, curries and breads" loading="lazy">', text, count=1)
+              p.write_text(text, encoding='utf-8')
+
+          home = Path('index.html')
+          text = home.read_text(encoding='utf-8')
+          text = re.sub(r'<title>.*?</title>', '<title>Shahsphere | IT, AI, Consulting, Education & Local Services</title>', text, count=1, flags=re.S)
+          desc = 'Shahsphere brings IT & digital, AI, business consulting, education, Indian catering, staffing and India travel services together under one operating standard.'
+          text = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{desc}">', text, count=1)
+          text = re.sub(r'(<meta property="og:title" content=")[^"]*(")', r'\1Shahsphere | IT, AI, Consulting, Education & Local Services\2', text, count=1)
+          text = re.sub(r'(<meta property="og:description" content=")[^"]*(")', rf'\g<1>{desc}\2', text, count=1)
+          text = re.sub(r'(<meta name="twitter:title" content=")[^"]*(")', r'\1Shahsphere | IT, AI, Consulting, Education & Local Services\2', text, count=1)
+          text = re.sub(r'(<meta name="twitter:description" content=")[^"]*(")', rf'\g<1>{desc}\2', text, count=1)
+          home.write_text(text, encoding='utf-8')
+
+          cssp = Path('styles.css')
+          css = cssp.read_text(encoding='utf-8')
+          css_block = '''/* Shahsphere Phase 2 SEO START */
+          .phase2-seo{padding:72px 0;border-top:1px solid var(--line,#dbe2ea);background:var(--panel,#f7f9fc)}
+          .phase2-seo .sec-head{max-width:900px}
+          .phase2-seo .grid-3{margin-top:28px}
+          /* Shahsphere Phase 2 SEO END */'''
+          css = re.sub(r'/\* Shahsphere Phase 2 SEO START \*/.*?/\* Shahsphere Phase 2 SEO END \*/', css_block, css, flags=re.S)
+          if '/* Shahsphere Phase 2 SEO START */' not in css:
+              css += '\n' + css_block + '\n'
+          cssp.write_text(css, encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          if sitemap.exists():
+              s = sitemap.read_text(encoding='utf-8')
+              s = re.sub(r'<lastmod>[^<]+</lastmod>', '<lastmod>2026-09-16</lastmod>', s)
+              sitemap.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit Phase 2 SEO changes
+        run: |
+          if git diff --quiet; then echo 'No Phase 2 changes required'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html services/*.html styles.css sitemap.xml
+          git commit -m 'Apply Phase 2 search visibility SEO improvements'
+          git push
