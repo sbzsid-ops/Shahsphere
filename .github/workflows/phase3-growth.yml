@@ -1,0 +1,182 @@
+name: Apply Shahsphere Phase 3 Growth SEO
+
+on:
+  push:
+    paths:
+      - '.github/workflows/phase3-growth.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  phase3-growth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Phase 3 content and internal-link layer
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          Path('insights').mkdir(exist_ok=True)
+          pages = [
+            {
+              'slug':'small-business-website-seo-connecticut',
+              'title':'Small Business Website SEO in Connecticut | Shahsphere Insights',
+              'description':'A practical guide to building a small-business website that is easier to find in search and easier for visitors to contact.',
+              'eyebrow':'SEO GUIDE',
+              'heading':'Small Business Website SEO in Connecticut: A Practical Guide',
+              'intro':'A strong local website does more than look professional. It should make the business, service area, services and next step clear to both visitors and search engines.',
+              'sections':[
+                ('Start with one clear service page','Give each important service its own page with a descriptive title, useful copy, a clear URL and a specific call to action. Avoid combining unrelated services into one generic page.'),
+                ('Make the service area explicit','If you serve a defined geography, say so naturally in the page content, title or supporting sections. For a Connecticut business, this can include the towns or cities that are genuinely within the service area.'),
+                ('Build useful supporting content','Answer real customer questions with guides, FAQs and examples. Supporting content gives visitors more context and creates relevant internal links back to core service pages.'),
+                ('Measure enquiries, not only traffic','Connect analytics and Search Console so you can distinguish impressions and visits from meaningful actions such as contact-form submissions, calls or other enquiries.')
+              ]
+            },
+            {
+              'slug':'ai-automation-for-admissions-teams',
+              'title':'AI Automation for Admissions Teams | Shahsphere Insights',
+              'description':'How education teams can use AI automation to reduce repetitive admissions work while keeping human oversight in the process.',
+              'eyebrow':'AI & EDUCATION',
+              'heading':'AI Automation for Admissions Teams: Where to Start',
+              'intro':'AI can be useful in admissions when it is applied to defined workflows rather than treated as a replacement for the admissions team. Start with repetitive, measurable tasks and keep human review where judgment matters.',
+              'sections':[
+                ('Map the repetitive work first','List common inquiry types, follow-up tasks, FAQs, reminders and reporting steps. The best automation candidates are usually repetitive processes with clear inputs and outputs.'),
+                ('Connect automation to the existing CRM','An AI workflow is more useful when it can work with the systems the team already uses. Define what information should be read, updated or escalated rather than creating another disconnected tool.'),
+                ('Create escalation rules','Not every student question should receive an automated answer. Establish rules for questions that require a counselor, financial-aid specialist, academic team or other human owner.'),
+                ('Track operational outcomes','Measure response time, follow-up completion, workload and qualified enquiries. Review outputs regularly and refine the workflow based on actual usage.')
+              ]
+            },
+            {
+              'slug':'india-travel-planning-from-the-us',
+              'title':'India Travel Planning from the US | Shahsphere Insights',
+              'description':'A practical framework for planning a customized India trip from the United States, including itinerary design, local transport and on-the-ground support.',
+              'eyebrow':'INDIA TRAVEL',
+              'heading':'Planning an India Trip from the US: A Practical Framework',
+              'intro':'India rewards thoughtful planning because travel time, regional distances, local experiences and preferred pace can vary significantly between destinations. A useful itinerary balances what you want to see with how you want to travel.',
+              'sections':[
+                ('Choose a travel style before choosing every destination','Decide whether the trip is focused on culture, food, nature, family visits, heritage, relaxation or a combination. This helps prevent an itinerary from becoming an exhausting list of stops.'),
+                ('Group destinations geographically','Build sensible regional clusters rather than crossing the country repeatedly. Delhi, Rajasthan and nearby destinations can be planned as one journey, while southern destinations can form a separate route.'),
+                ('Plan transport as part of the itinerary','Airport transfers, intercity travel, local drivers and guides can materially affect the pace of a trip. Confirm the transport approach before finalizing daily sightseeing.'),
+                ('Keep room for local coordination','A local point of contact can help with changes, transfers and practical questions during the journey, especially when plans need to change after arrival.')
+              ]
+            },
+            {
+              'slug':'indian-catering-storrs-event-planning',
+              'title':'Indian Catering in Storrs, CT: Event Planning Guide | Shahsphere',
+              'description':'A practical guide to planning Indian catering for gatherings in Storrs, Manchester and Hartford, from menu selection to headcount and advance ordering.',
+              'eyebrow':'DASTARKHAWN',
+              'heading':'Indian Catering in Storrs, CT: Planning a Great Event Menu',
+              'intro':'For an Indian food gathering, the menu is only one part of the planning. Headcount, dietary preferences, dish variety, serving style and timing all affect the final experience.',
+              'sections':[
+                ('Start with the guest count','Confirm the approximate number of guests before selecting the menu. It helps determine portions, variety and the right service approach.'),
+                ('Balance familiar favourites with variety','A practical spread can combine rice, breads, gravies, vegetarian dishes and selected meat dishes. Ask guests about dietary preferences before finalizing the menu.'),
+                ('Choose North Indian, South Indian or a mix','Different occasions call for different menus. A focused regional menu can create a coherent meal, while a mixed menu can work well for larger groups with varied preferences.'),
+                ('Plan ahead','For a catered event, confirm the date, headcount, menu and delivery or serving expectations early. Dastarkhawn currently asks for advance ordering and has a minimum-order policy, so confirm the current terms when enquiring.')
+              ]
+            }
+          ]
+
+          def esc(s):
+              return s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;')
+
+          article_template = '''<!DOCTYPE html>
+          <html lang="en">
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>{title}</title>
+          <meta name="description" content="{description}">
+          <link rel="canonical" href="https://shahsphere.com/insights/{slug}.html">
+          <meta name="robots" content="index, follow, max-image-preview:large">
+          <meta property="og:type" content="article">
+          <meta property="og:site_name" content="Shahsphere">
+          <meta property="og:title" content="{title}">
+          <meta property="og:description" content="{description}">
+          <meta property="og:url" content="https://shahsphere.com/insights/{slug}.html">
+          <meta property="og:image" content="https://shahsphere.com/assets/images/shahsphere-social-preview.svg">
+          <meta name="twitter:card" content="summary_large_image">
+          <meta name="twitter:title" content="{title}">
+          <meta name="twitter:description" content="{description}">
+          <meta name="twitter:image" content="https://shahsphere.com/assets/images/shahsphere-social-preview.svg">
+          <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+          <script type="application/ld+json">{schema}</script>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="../styles.css">
+          </head>
+          <body data-theme="light">
+          <header class="site-head"><div class="wrap head-inner"><a class="brand" href="../index.html" aria-label="Shahsphere home"><span class="brand-mark">◉</span><span class="brand-word">Shah<span class="b-accent">sphere</span></span></a><nav class="nav" aria-label="Primary"><a href="../services/it-digital.html">IT &amp; Digital</a><a href="../services/ai.html">AI Services</a><a href="../services/consulting.html">Consulting</a><a href="../services/education.html">Education</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav><div class="head-actions"><a class="btn btn-primary btn-sm" href="../contact.html">Get in touch</a></div></div></header>
+          <main><section class="page-hero"><div class="wrap"><a class="crumb" href="index.html">← Shahsphere Insights</a><span class="eyebrow">{eyebrow}</span><h1>{heading}</h1><p class="lede">{intro}</p></div></section>
+          <section><div class="wrap"><div class="article-content">{body}</div></div></section>
+          <section class="phase3-related"><div class="wrap"><span class="eyebrow">EXPLORE SHAHPHERE SERVICES</span><h2>Related services</h2><div class="grid-3"><div class="card"><h3>IT &amp; Digital</h3><p>Website development, SEO and content systems.</p><a class="link" href="../services/it-digital.html">Explore IT &amp; Digital →</a></div><div class="card"><h3>AI Services</h3><p>AI video, automation and internal tools.</p><a class="link" href="../services/ai.html">Explore AI Services →</a></div><div class="card"><h3>Consulting</h3><p>CRM and revenue operations support.</p><a class="link" href="../services/consulting.html">Explore Consulting →</a></div></div><p style="margin-top:28px"><a class="btn btn-secondary" href="../contact.html">Discuss a project</a></p></div></section></main>
+          <footer><div class="wrap"><p>© Shahsphere · One sphere, many worlds.</p></div></footer>
+          <script src="../script.js"></script>
+          </body></html>'''
+
+          for a in pages:
+              body = ''.join(f'<h2>{esc(h)}</h2><p>{esc(p)}</p>' for h,p in a['sections'])
+              schema = '{"@context":"https://schema.org","@type":"Article","headline":' + repr(a['heading']).replace("'", '"') + ',"description":' + repr(a['description']).replace("'", '"') + ',"mainEntityOfPage":{"@type":"WebPage","@id":"https://shahsphere.com/insights/' + a['slug'] + '.html"},"publisher":{"@type":"Organization","name":"Shahsphere","url":"https://shahsphere.com/"}}'
+              # JSON-safe schema construction
+              import json
+              schema_obj = {"@context":"https://schema.org","@type":"Article","headline":a['heading'],"description":a['description'],"mainEntityOfPage":{"@type":"WebPage","@id":f"https://shahsphere.com/insights/{a['slug']}.html"},"publisher":{"@type":"Organization","name":"Shahsphere","url":"https://shahsphere.com/"}}
+              schema = json.dumps(schema_obj, separators=(',',':'))
+              out = article_template.format(title=esc(a['title']),description=esc(a['description']),slug=a['slug'],schema=esc(schema).replace('&quot;','"'),eyebrow=esc(a['eyebrow']),heading=esc(a['heading']),intro=esc(a['intro']),body=body)
+              Path(f"insights/{a['slug']}.html").write_text(out, encoding='utf-8')
+
+          index = '''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Shahsphere Insights | AI, SEO, Education, Travel &amp; Local Business Guides</title><meta name="description" content="Practical guides from Shahsphere covering AI, SEO, education operations, India travel and local services."><link rel="canonical" href="https://shahsphere.com/insights/"><meta name="robots" content="index, follow, max-image-preview:large"><link rel="icon" type="image/svg+xml" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head><body data-theme="light"><header class="site-head"><div class="wrap head-inner"><a class="brand" href="../index.html" aria-label="Shahsphere home"><span class="brand-mark">◉</span><span class="brand-word">Shah<span class="b-accent">sphere</span></span></a><nav class="nav" aria-label="Primary"><a href="../index.html">Home</a><a href="../services/it-digital.html">IT &amp; Digital</a><a href="../services/ai.html">AI Services</a><a href="../services/education.html">Education</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav></div></header><main><section class="page-hero"><div class="wrap"><span class="eyebrow">SHAHSPHERE INSIGHTS</span><h1>Practical guides for business, technology and travel.</h1><p class="lede">Useful, focused articles connected to the services Shahsphere provides.</p></div></section><section><div class="wrap"><div class="grid-2">'''
+          for a in pages:
+              index += f'<article class="card"><span class="eyebrow">{esc(a["eyebrow"])}</span><h2>{esc(a["heading"])}</h2><p>{esc(a["intro"])}</p><a class="link" href="{a["slug"]}.html">Read the guide →</a></article>'
+          index += '</div></div></section></main><footer><div class="wrap"><p>© Shahsphere · One sphere, many worlds.</p></div></footer></body></html>'
+          Path('insights/index.html').write_text(index, encoding='utf-8')
+
+          # Add an Insights link to the homepage without changing existing navigation structure.
+          home = Path('index.html')
+          text = home.read_text(encoding='utf-8')
+          if 'href="insights/index.html"' not in text:
+              text = text.replace('<a href="about.html">About</a><a href="contact.html">Contact</a>', '<a href="insights/index.html">Insights</a><a href="about.html">About</a><a href="contact.html">Contact</a>', 1)
+          home.write_text(text, encoding='utf-8')
+
+          # Add a reusable Phase 3 style block.
+          cssp = Path('styles.css')
+          css = cssp.read_text(encoding='utf-8')
+          block = '''/* Shahsphere Phase 3 Growth START */
+          .article-content{max-width:820px;margin:0 auto}
+          .article-content h2{margin:42px 0 12px}
+          .article-content p{font-size:1.08rem;line-height:1.8}
+          .phase3-related{padding:72px 0;background:var(--panel,#f7f9fc);border-top:1px solid var(--line,#dbe2ea)}
+          /* Shahsphere Phase 3 Growth END */'''
+          css = re.sub(r'/\* Shahsphere Phase 3 Growth START \*/.*?/\* Shahsphere Phase 3 Growth END \*/', block, css, flags=re.S)
+          if '/* Shahsphere Phase 3 Growth START */' not in css:
+              css += '\n' + block + '\n'
+          cssp.write_text(css, encoding='utf-8')
+
+          # Add the new pages to the XML sitemap.
+          sitemap = Path('sitemap.xml')
+          s = sitemap.read_text(encoding='utf-8') if sitemap.exists() else '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>'
+          s = re.sub(r'</urlset>\s*$', '', s)
+          for a in pages:
+              url = f'https://shahsphere.com/insights/{a["slug"]}.html'
+              if url not in s:
+                  s += f'<url><loc>{url}</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>'
+          if 'https://shahsphere.com/insights/' not in s:
+              s += '<url><loc>https://shahsphere.com/insights/</loc><lastmod>2026-09-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>'
+          s += '</urlset>'
+          sitemap.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit Phase 3 growth assets
+        run: |
+          if git diff --quiet; then echo 'No Phase 3 changes required'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add insights index.html styles.css sitemap.xml
+          git commit -m 'Launch Phase 3 content and internal linking SEO'
+          git push
