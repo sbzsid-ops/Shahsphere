@@ -1,0 +1,141 @@
+name: Apply Shahsphere Phase 3A Local SEO
+
+on:
+  push:
+    paths:
+      - '.github/workflows/phase3a-local-seo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  phase3a-local-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create focused local service pages
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, re
+
+          pages = [
+            {
+              'path':'services/website-development-connecticut.html',
+              'title':'Website Development in Connecticut | Shahsphere',
+              'description':'Website development and SEO services for businesses and organizations in Connecticut, including responsive websites, landing pages and search-focused content.',
+              'name':'Website Development in Connecticut',
+              'type':'Website Development',
+              'area':['Connecticut, United States'],
+              'intro':'Shahsphere provides website development, SEO and content support for Connecticut businesses and organizations that need a clear, fast and search-friendly web presence.',
+              'points':[('Business Websites','Responsive websites structured around services, audiences and clear conversion paths.'),('SEO Foundations','Technical and on-page SEO elements that help search engines understand the site and its important pages.'),('Landing Pages','Focused pages for services, campaigns and local audiences, with clear calls to action.')],
+              'related':['../services/it-digital.html','../services/consulting.html','../services/ai.html']
+            },
+            {
+              'path':'services/seo-connecticut.html',
+              'title':'SEO Services in Connecticut | Shahsphere',
+              'description':'Search engine optimization services for Connecticut businesses, covering technical SEO, on-page optimization, content strategy and conversion-focused landing pages.',
+              'name':'SEO Services in Connecticut',
+              'type':'SEO Services',
+              'area':['Connecticut, United States'],
+              'intro':'Shahsphere helps Connecticut businesses strengthen organic search visibility through technical SEO, on-page improvements, useful content and focused landing pages.',
+              'points':[('Technical SEO','Improve crawlability, metadata, canonical signals, structured data and site architecture.'),('On-Page SEO','Align headings, copy, internal links and page intent with the services customers are looking for.'),('Content Strategy','Build useful supporting content that answers customer questions and connects naturally to core service pages.')],
+              'related':['../services/it-digital.html','../insights/small-business-website-seo-connecticut.html','../contact.html']
+            },
+            {
+              'path':'services/ai-automation-connecticut.html',
+              'title':'AI Automation Services in Connecticut | Shahsphere',
+              'description':'Practical AI automation services for Connecticut organizations, including workflow automation, AI-powered internal tools and content production.',
+              'name':'AI Automation Services in Connecticut',
+              'type':'AI Automation',
+              'area':['Connecticut, United States'],
+              'intro':'Shahsphere helps Connecticut teams apply AI to defined business workflows, internal tools and content production while keeping human oversight where it matters.',
+              'points':[('Workflow Automation','Identify repetitive processes and connect AI-assisted steps to existing business workflows.'),('Internal AI Tools','Build lightweight tools that help teams search, summarize, draft or organize information.'),('AI Content','Use generative AI for practical video and social-media production with a human review process.')],
+              'related':['../services/ai.html','../services/consulting.html','../insights/ai-automation-for-admissions-teams.html']
+            },
+            {
+              'path':'services/indian-catering-storrs.html',
+              'title':'Indian Catering in Storrs, CT | Dastarkhawn',
+              'description':'Home-cooked North and South Indian catering in Storrs, Connecticut for gatherings and events, with customizable vegetarian, chicken and mutton menus.',
+              'name':'Indian Catering in Storrs, CT',
+              'type':'Indian Catering',
+              'area':['Storrs, Connecticut','Manchester, Connecticut','Hartford, Connecticut'],
+              'intro':'Dastarkhawn by Shahsphere offers home-cooked Indian catering around Storrs, with customizable menus for gatherings and events and options spanning vegetarian dishes, chicken and mutton preparations.',
+              'points':[('North Indian Specialities','Biryani, korma, nihari, rogan josh and paneer specialities can be included in customized menus.'),('Vegetarian Options','Vegetarian menu choices include paneer dishes and vegetarian biryani.'),('Event Catering','Menus are planned around the occasion, guest count and requested dishes.')],
+              'related':['../services/food.html','../insights/indian-catering-storrs-event-planning.html','../contact.html']
+            },
+            {
+              'path':'services/event-staffing-connecticut.html',
+              'title':'Event Staffing in Connecticut | Shahsphere',
+              'description':'Event staffing and manpower support in Connecticut for campus events, conferences, productions, registration, hospitality and event operations.',
+              'name':'Event Staffing in Connecticut',
+              'type':'Event Staffing',
+              'area':['Connecticut, United States'],
+              'intro':'Shahsphere provides on-demand event staffing support in Connecticut for organizations that need additional people for event operations, campus programs and productions.',
+              'points':[('Campus Events','Registration, wayfinding, hospitality and event-support roles for colleges and universities.'),('Conferences & Events','Additional staff for guest support, registration desks and venue operations.'),('Production Support','Film-shoot extras and set-support staffing based on project requirements.')],
+              'related':['../services/staffing.html','../contact.html','../insights/index.html']
+            },
+            {
+              'path':'services/event-staffing-new-york.html',
+              'title':'Event Staffing in New York | Shahsphere',
+              'description':'Event staffing and manpower support in New York for events, campus programs, conferences and productions, including registration and hospitality roles.',
+              'name':'Event Staffing in New York',
+              'type':'Event Staffing',
+              'area':['New York, United States'],
+              'intro':'Shahsphere provides on-demand staffing support in New York for events, productions and campus programs, with roles scoped around the needs of each engagement.',
+              'points':[('Event Operations','Registration, guest support, wayfinding and hospitality roles.'),('Campus Programs','Staffing support for orientations, conferences, festivals and other campus events.'),('Production Staffing','Extras and selected set-support roles for film and media productions.')],
+              'related':['../services/staffing.html','../contact.html','../insights/index.html']
+            },
+            {
+              'path':'services/india-travel-planning.html',
+              'title':'India Travel Planning from the US | Shahsphere',
+              'description':'Personalized India travel planning from the US, including custom itineraries, airport transfers, drivers, guides and local coordination.',
+              'name':'India Travel Planning from the US',
+              'type':'India Travel Planning',
+              'area':['India'],
+              'intro':'Shahsphere plans customized India trips for US-based travelers, combining itinerary design with local coordination and on-the-ground travel support.',
+              'points':[('Custom Itineraries','Plan trips around interests, dates, preferred pace and selected regions of India.'),('Ground Support','Coordinate airport transfers, trained drivers, GPS-tracked vehicles and English-speaking guides.'),('Local Concierge','Maintain a local coordination point for practical questions and changes during the journey.')],
+              'related':['../services/travel.html','../insights/india-travel-planning-from-the-us.html','../contact.html']
+            }
+          ]
+
+          def esc(s):
+              return s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;')
+
+          for p in pages:
+              url='https://shahsphere.com/'+p['path']
+              schema={"@context":"https://schema.org","@type":"Service","name":p['name'],"serviceType":p['type'],"description":p['description'],"url":url,"provider":{"@type":"Organization","name":"Shahsphere","url":"https://shahsphere.com/"},"areaServed":[{"@type":"Place","name":x} for x in p['area']]}
+              breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shahsphere.com/"},{"@type":"ListItem","position":2,"name":p['name'],"item":url}]}
+              cards=''.join(f'<div class="card"><h3>{esc(h)}</h3><p>{esc(t)}</p></div>' for h,t in p['points'])
+              links=''.join(f'<a class="link" href="{x}">{"Explore related service →" if "services/" in x else "Read more →"}</a> ' for x in p['related'])
+              html=f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{esc(p['title'])}</title><meta name="description" content="{esc(p['description'])}"><link rel="canonical" href="{url}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:site_name" content="Shahsphere"><meta property="og:title" content="{esc(p['title'])}"><meta property="og:description" content="{esc(p['description'])}"><meta property="og:url" content="{url}"><meta property="og:image" content="https://shahsphere.com/assets/images/shahsphere-social-preview.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(p['title'])}"><meta name="twitter:description" content="{esc(p['description'])}"><meta name="twitter:image" content="https://shahsphere.com/assets/images/shahsphere-social-preview.svg"><link rel="icon" type="image/svg+xml" href="../favicon.svg"><script type="application/ld+json">{json.dumps(schema,separators=(',',':'))}</script><script type="application/ld+json">{json.dumps(breadcrumb,separators=(',',':'))}</script><link rel="stylesheet" href="../styles.css"></head><body data-theme="light"><header class="site-head"><div class="wrap head-inner"><a class="brand" href="../index.html" aria-label="Shahsphere home"><span class="brand-mark">◉</span><span class="brand-word">Shah<span class="b-accent">sphere</span></span></a><nav class="nav" aria-label="Primary"><a href="../index.html">Home</a><a href="it-digital.html">IT &amp; Digital</a><a href="ai.html">AI Services</a><a href="consulting.html">Consulting</a><a href="education.html">Education</a><a href="../insights/index.html">Insights</a><a href="../contact.html">Contact</a></nav></div></header><main><section class="page-hero"><div class="wrap"><a class="crumb" href="../index.html">← Shahsphere</a><span class="eyebrow">LOCAL SERVICE</span><h1>{esc(p['name'])}</h1><p class="lede">{esc(p['intro'])}</p></div></section><section><div class="wrap"><span class="eyebrow">WHAT WE PROVIDE</span><div class="grid-3">{cards}</div></div></section><section class="phase3-related"><div class="wrap"><span class="eyebrow">NEXT STEP</span><h2>Explore related Shahsphere services</h2><div class="related-links">{links}</div><p style="margin-top:28px"><a class="btn btn-primary" href="../contact.html">Get in touch</a></p></div></section></main><footer><div class="wrap"><p>© Shahsphere · One sphere, many worlds.</p></div></footer></body></html>'''
+              Path(p['path']).write_text(html,encoding='utf-8')
+
+          # Add local service cards to the existing Insights index only if not already present.
+          home=Path('index.html')
+          text=home.read_text(encoding='utf-8')
+          marker='<!-- Shahsphere Phase 3A Local SEO -->'
+          if marker not in text:
+              block='''<!-- Shahsphere Phase 3A Local SEO --><section class="phase3-related"><div class="wrap"><span class="eyebrow">LOCAL SERVICES</span><div class="sec-head"><h2>Services by location</h2><p>Focused pages for selected service areas where Shahsphere currently provides or plans to provide support.</p></div><div class="grid-3"><div class="card"><h3>Connecticut</h3><p>Website development, SEO, AI automation, event staffing and Indian catering.</p><a class="link" href="services/website-development-connecticut.html">Website Development →</a><br><a class="link" href="services/seo-connecticut.html">SEO Services →</a></div><div class="card"><h3>New York</h3><p>Event staffing and selected business service support.</p><a class="link" href="services/event-staffing-new-york.html">Event Staffing →</a></div><div class="card"><h3>India Travel</h3><p>Personalized India travel planning and local coordination for US-based travelers.</p><a class="link" href="services/india-travel-planning.html">Travel Planning →</a></div></div></div></section>'''
+              text=text.replace('</main>',block+'</main>',1) if '</main>' in text else text.replace('</body>',block+'</body>',1)
+              home.write_text(text,encoding='utf-8')
+
+          sitemap=Path('sitemap.xml')
+          s=sitemap.read_text(encoding='utf-8')
+          for p in pages:
+              url='https://shahsphere.com/'+p['path']
+              if url not in s:
+                  s=s.replace('</urlset>',f'<url><loc>{url}</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url></urlset>')
+          sitemap.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit Phase 3A local SEO
+        run: |
+          if git diff --quiet; then echo 'No Phase 3A changes required'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add services index.html sitemap.xml
+          git commit -m 'Add Phase 3A local service SEO pages'
+          git push
